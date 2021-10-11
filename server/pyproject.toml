@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "server"
+version = "0.1.0"
+description = ""
+authors = ["DMITRII <dengivseti@list.ru>"]
+packages = [
+    { include="scripts", from="." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+python-dotenv = "^0.19.1"
+loguru = "^0.5.3"
+fastapi = "^0.70.0"
+ormar = {extras = ["postgresql"], version = "^0.10.20"}
+odmantic = "^0.3.5"
+uvicorn = {extras = ["standard"], version = "^0.15.0"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.scripts]
+serve = 'scripts.run_server:main'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
