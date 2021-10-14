@@ -18,6 +18,7 @@ uvicorn = {extras = ["standard"], version = "^0.15.0"}
 fastapi-users = {extras = ["ormar"], version = "^8.1.1"}
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+validators = "^0.18.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

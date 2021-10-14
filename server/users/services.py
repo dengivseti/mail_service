@@ -1,8 +1,10 @@
 import os
+import re
 from typing import Optional
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from jose import jwt
+from fastapi import HTTPException
 
 SECRET = os.getenv("SECRET_JWT")
 ALGORITHM = "HS256"
@@ -32,3 +34,14 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def validate_password(password: str):
+    if len(password) < 8:
+        raise HTTPException(400, "Make sure your password is at lest 8 letters")
+    elif re.search("[0-9]", password) is None:
+        raise HTTPException(400, "Make sure your password has a number in it")
+    elif re.search("[A-Z]", password) is None:
+        raise HTTPException(400, "Make sure your password has a capital letter in it")
+    else:
+        return encrypt_password(password)

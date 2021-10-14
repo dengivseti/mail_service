@@ -1,4 +1,15 @@
 [[package]]
+name = "aiosqlite"
+version = "0.17.0"
+description = "asyncio bridge to the standard sqlite3 module"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+typing_extensions = ">=3.7.2"
+
+[[package]]
 name = "anyio"
 version = "3.3.3"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
@@ -142,6 +153,14 @@ mysql = ["aiomysql"]
 postgresql = ["asyncpg"]
 postgresql_aiopg = ["aiopg"]
 sqlite = ["aiosqlite"]
+
+[[package]]
+name = "decorator"
+version = "5.1.0"
+description = "Decorators for Humans"
+category = "main"
+optional = false
+python-versions = ">=3.5"
 
 [[package]]
 name = "dnspython"
@@ -336,26 +355,27 @@ fastapi = ["fastapi (>=0.61.1,<0.64.0)"]
 
 [[package]]
 name = "ormar"
-version = "0.10.20"
+version = "0.10.21"
 description = "A simple async ORM with fastapi in mind and pydantic validation."
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.6.2,<4.0.0"
 
 [package.dependencies]
-asyncpg = {version = "*", optional = true, markers = "extra == \"postgresql\""}
-databases = ">=0.3.2,<0.5.3"
-psycopg2-binary = {version = "*", optional = true, markers = "extra == \"postgresql\""}
+aiosqlite = ">=0.17.0,<0.18.0"
+asyncpg = {version = ">=0.24.0,<0.25.0", optional = true, markers = "extra == \"postgresql\" or extra == \"postgres\" or extra == \"dev\""}
+databases = ">=0.3.2,<0.5.4"
+psycopg2-binary = {version = ">=2.9.1,<3.0.0", optional = true, markers = "extra == \"postgresql\" or extra == \"postgres\" or extra == \"dev\""}
 pydantic = ">=1.6.1,<1.7 || >1.7,<1.7.1 || >1.7.1,<1.7.2 || >1.7.2,<1.7.3 || >1.7.3,<1.8 || >1.8,<1.8.1 || >1.8.1,<=1.8.2"
-sqlalchemy = ">=1.3.18,<1.4.26"
-typing-extensions = ">=3.7,<3.10.0.3"
+SQLAlchemy = ">=1.3.18,<1.4.26"
 
 [package.extras]
-crypto = ["cryptography"]
-mysql = ["aiomysql", "pymysql"]
-orjson = ["orjson"]
-postgresql = ["asyncpg", "psycopg2-binary"]
-sqlite = ["aiosqlite"]
+postgresql = ["asyncpg (>=0.24.0,<0.25.0)", "psycopg2-binary (>=2.9.1,<3.0.0)"]
+postgres = ["asyncpg (>=0.24.0,<0.25.0)", "psycopg2-binary (>=2.9.1,<3.0.0)"]
+dev = ["asyncpg (>=0.24.0,<0.25.0)", "psycopg2-binary (>=2.9.1,<3.0.0)", "aiomysql (>=0.0.21,<0.0.22)", "cryptography (>=35.0.0,<36.0.0)", "orjson (>=3.6.4,<4.0.0)"]
+mysql = ["aiomysql (>=0.0.21,<0.0.22)"]
+crypto = ["cryptography (>=35.0.0,<36.0.0)"]
+orjson = ["orjson (>=3.6.4,<4.0.0)"]
 
 [[package]]
 name = "packaging"
@@ -672,6 +692,21 @@ docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "sp
 test = ["aiohttp", "flake8 (>=3.9.2,<3.10.0)", "psutil", "pycodestyle (>=2.7.0,<2.8.0)", "pyOpenSSL (>=19.0.0,<19.1.0)", "mypy (>=0.800)"]
 
 [[package]]
+name = "validators"
+version = "0.18.2"
+description = "Python Data Validation for Humans™."
+category = "main"
+optional = false
+python-versions = ">=3.4"
+
+[package.dependencies]
+decorator = ">=3.4.0"
+six = ">=1.4.0"
+
+[package.extras]
+test = ["pytest (>=2.2.3)", "flake8 (>=2.4.0)", "isort (>=4.2.2)"]
+
+[[package]]
 name = "watchgod"
 version = "0.7"
 description = "Simple, modern file watching and code reload in python."
@@ -709,9 +744,13 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "0ef88d3f85162f7c770c6459f43877b9d2e5aee4d0b61d121bccec9c4b14f7d2"
+content-hash = "9ad87267ec3c9b256a281f4a653e6ce0f754dfd67d7d9a4f282ee68742bd5ed8"
 
 [metadata.files]
+aiosqlite = [
+    {file = "aiosqlite-0.17.0-py3-none-any.whl", hash = "sha256:6c49dc6d3405929b1d08eeccc72306d3677503cc5e5e43771efc1e00232e8231"},
+    {file = "aiosqlite-0.17.0.tar.gz", hash = "sha256:f0e6acc24bc4864149267ac82fb46dfb3be4455f99fe21df82609cc6e6baee51"},
+]
 anyio = [
     {file = "anyio-3.3.3-py3-none-any.whl", hash = "sha256:56ceaeed2877723578b1341f4f68c29081db189cfb40a97d1922b9513f6d7db6"},
     {file = "anyio-3.3.3.tar.gz", hash = "sha256:8eccec339cb4a856c94a75d50fc1d451faf32a05ef406be462e2efc59c9838b0"},
@@ -832,6 +871,10 @@ cryptography = [
 databases = [
     {file = "databases-0.5.2-py3-none-any.whl", hash = "sha256:c12473ce4a3eb9623bef0623ebd021012c6c4e27216689b501e701d012e84381"},
     {file = "databases-0.5.2.tar.gz", hash = "sha256:4e93800c540a4dbef8b8ce73dfeee95551d5d27e872b07326b1e523c185645b4"},
+]
+decorator = [
+    {file = "decorator-5.1.0-py3-none-any.whl", hash = "sha256:7b12e7c3c6ab203a29e157335e9122cb03de9ab7264b137594103fd4a683b374"},
+    {file = "decorator-5.1.0.tar.gz", hash = "sha256:e59913af105b9860aa2c8d3272d9de5a56a4e608db9a2f167a8480b323d529a7"},
 ]
 dnspython = [
     {file = "dnspython-2.1.0-py3-none-any.whl", hash = "sha256:95d12f6ef0317118d2a1a6fc49aac65ffec7eb8087474158f42f26a639135216"},
@@ -955,8 +998,8 @@ odmantic = [
     {file = "ODMantic-0.3.5.tar.gz", hash = "sha256:fe820dc414ecefdc4288f1d57005f6630ee1e720c114d291a1de1dba4e816c57"},
 ]
 ormar = [
-    {file = "ormar-0.10.20-py3-none-any.whl", hash = "sha256:d6be97a77030c42c7a933e6a5d6b00854318e602f1453247c61380594d6d886b"},
-    {file = "ormar-0.10.20.tar.gz", hash = "sha256:2468a54db30bd813a6edef2db8ba942b88febc315f51fb31e619018203c1f773"},
+    {file = "ormar-0.10.21-py3-none-any.whl", hash = "sha256:c430d62f32ec1be9ac76ba4f92abaee1651d56870e1164f754a9ee364d7e2b6d"},
+    {file = "ormar-0.10.21.tar.gz", hash = "sha256:9557d648b9c6db19c18e7b1419dc6c4a50d8dee6372ebb42f70c454ba63ee3d2"},
 ]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
@@ -1276,6 +1319,10 @@ uvloop = [
     {file = "uvloop-0.16.0-cp39-cp39-manylinux_2_12_x86_64.manylinux2010_x86_64.whl", hash = "sha256:98d117332cc9e5ea8dfdc2b28b0a23f60370d02e1395f88f40d1effd2cb86c4f"},
     {file = "uvloop-0.16.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1e5f2e2ff51aefe6c19ee98af12b4ae61f5be456cd24396953244a30880ad861"},
     {file = "uvloop-0.16.0.tar.gz", hash = "sha256:f74bc20c7b67d1c27c72601c78cf95be99d5c2cdd4514502b4f3eb0933ff1228"},
+]
+validators = [
+    {file = "validators-0.18.2-py3-none-any.whl", hash = "sha256:0143dcca8a386498edaf5780cbd5960da1a4c85e0719f3ee5c9b41249c4fefbd"},
+    {file = "validators-0.18.2.tar.gz", hash = "sha256:37cd9a9213278538ad09b5b9f9134266e7c226ab1fede1d500e29e0a8fbb9ea6"},
 ]
 watchgod = [
     {file = "watchgod-0.7-py3-none-any.whl", hash = "sha256:d6c1ea21df37847ac0537ca0d6c2f4cdf513562e95f77bb93abbcf05573407b7"},

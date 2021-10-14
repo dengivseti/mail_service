@@ -1,3 +1,4 @@
+import validators
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -7,19 +8,28 @@ from .auth import (
     authenticate_user,
     get_current_active_user,
 )
-from .services import ACCESS_TOKEN_EXPIRE_MINUTES, create_access_token, encrypt_password
+from .services import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    create_access_token,
+    validate_password,
+)
 from .schemas import Token, UserCreate, User, UserOut
 from . import models
+
 
 user_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@user_router.post("/signup", status_code=201, response_model=User)
+@user_router.post(
+    "/signup",
+    status_code=201,
+    response_model=User,
+)
 async def create_user(user: UserCreate):
     _user = await models.User.objects.get_or_none(email=user.email)
     if _user:
         raise HTTPException(400, "User already register")
-    hash_password = encrypt_password(user.password)
+    hash_password = validate_password(user.password)
     return await models.User.objects.create(email=user.email, password=hash_password)
 
 
