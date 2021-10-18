@@ -12,6 +12,12 @@ from .services import verify_password, SECRET, ALGORITHM
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
 
 async def get_user(email: str) -> UserInBD:
     user = await User.objects.get_or_none(email=email)
@@ -29,11 +35,6 @@ async def authenticate_user(email: str, password: str):
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
     try:
         payload = jwt.decode(token, SECRET, algorithms=[ALGORITHM])
         email: str = payload.get("sub")
