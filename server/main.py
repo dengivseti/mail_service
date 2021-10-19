@@ -1,11 +1,12 @@
 import dotenv
 
+
 dotenv.load_dotenv("server.env")
 
 from fastapi import FastAPI
-
 from users.api import user_router
 from domains.api import domain_router
+from mails.api import mail_router
 from db import database, metadata, engine
 
 app = FastAPI()
@@ -30,3 +31,4 @@ async def shutdown() -> None:
 
 app.include_router(user_router)
 app.include_router(domain_router)
+app.include_router(mail_router)

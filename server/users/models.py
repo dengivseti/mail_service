@@ -1,4 +1,4 @@
-from ormar import Model, Integer, String, Boolean, DateTime
+from ormar import Model, Integer, String, Boolean, DateTime, Float
 from db import MainMeta
 from uuid import uuid4
 from datetime import datetime
@@ -18,4 +18,5 @@ class User(Model):
         default=50,
     )
     thread = Integer(default=0)
+    balance = Float(default=0)
     create_at: datetime = DateTime(default=datetime.now)

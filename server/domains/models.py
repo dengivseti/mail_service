@@ -1,7 +1,7 @@
 from typing import Union, Optional
 
 from db import MainMeta
-from ormar import Model, String, Boolean, DateTime, Integer, ForeignKey
+from ormar import Model, String, Boolean, DateTime, Integer, ForeignKey, Float
 from datetime import datetime
 
 from users.models import User
@@ -24,5 +24,6 @@ class Domain(Model):
     type_domain: Optional[str] = String(
         max_length=100, choices=list(TypeDomain), default=TypeDomain.other.value
     )
+    price: int = Float(default=0.01)
     use_prefix: Optional[bool] = Boolean(default=False, nullable=False)
     user: Optional[UserConnect] = ForeignKey(User, nullable=True)

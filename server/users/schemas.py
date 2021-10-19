@@ -7,6 +7,7 @@ class User(BaseModel):
     max_thread: int
     thread: int
     is_active: bool
+    balance: float
 
 
 class UserCreate(BaseModel):

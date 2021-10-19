@@ -1,6 +1,5 @@
 from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.param_functions import Query
 from users.schemas import User
 from domains.models import TypeDomain
 from users.auth import get_current_superuser, get_current_active_user
