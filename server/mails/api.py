@@ -3,10 +3,10 @@ from typing import Optional, List
 from fastapi import APIRouter, Depends, HTTPException
 
 from .schemas import DeleteMail, GetEmails, GetAddressMail
-from .services import generate_value
+from .services import generate_value, is_active_mail
 from mails.models import Mail
 from users.schemas import User
-from users.services import buy_mail
+from users.services import buy_mail, delete_mail
 from users.auth import get_current_active_user, check_limit_for_user
 from domains.services import get_domains
 from domains.schemas import TypeDomain
@@ -55,6 +55,29 @@ async def get_mail(
         if already_get_mail.user.id != current_user.id:
             raise HTTPException(400, "Already create mail other user")
         return already_get_mail
-
     await buy_mail(price, current_user)
     return await Mail(mail=mail, user=current_user.id, price=price).save()
+
+
+@mail_router.get("/{id}/delete", status_code=201, response_model=DeleteMail)
+async def delete_mail_id(
+    id: int, current_user: User = Depends(get_current_active_user)
+):
+    mail = await is_active_mail(id, current_user)
+    if not mail:
+        raise HTTPException(400, detail="Mail not found")
+    await mail.update(is_active=False)
+    if not mail.emails:
+        logger.error(current_user.dict())
+        await delete_mail(mail.price, current_user)
+    return mail
+
+
+@mail_router.get("/{id}", status_code=200, response_model=GetEmails)
+async def get_emails(id: int, current_user: User = Depends(get_current_active_user)):
+    mail = await is_active_mail(id, current_user)
+    if not mail:
+        raise HTTPException(400, detail="Mail not found")
+    if mail.emails:
+        return mail
+    return mail

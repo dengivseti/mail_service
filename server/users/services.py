@@ -2,6 +2,7 @@ import os
 import re
 from typing import Optional
 from datetime import datetime, timedelta
+from loguru import logger
 from passlib.context import CryptContext
 from jose import jwt
 from fastapi import HTTPException
@@ -52,4 +53,10 @@ def validate_password(password: str):
 async def buy_mail(price: float, user: User):
     user.balance -= price
     user.thread += 1
+    await user.update()
+
+
+async def delete_mail(price: float, user: User):
+    user.balance += price
+    user.thread -= 1
     await user.update()

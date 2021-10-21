@@ -4,6 +4,7 @@ from datetime import datetime
 
 
 class GetAddressMail(BaseModel):
+    id: int
     mail: EmailStr
     time_expiries: datetime
 
@@ -25,6 +26,7 @@ class Email(BaseModel):
 
 
 class GetEmails(BaseModel):
+    id: int
     mail: EmailStr
     time_expiries: datetime
     emails: Optional[List[Email]]

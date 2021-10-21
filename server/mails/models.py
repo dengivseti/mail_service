@@ -23,7 +23,7 @@ class Mail(Model):
     emails: pydantic.Json = JSON(default=[])
 
 
-class MailMongo(odmantic.Model):
+class Email(odmantic.Model):
     date: datetime
     expireAt: datetime
     subject: str
@@ -34,4 +34,4 @@ class MailMongo(odmantic.Model):
     textAsHtml: str
 
     class Config:
-        collection = "Mail"
+        collection = "Email"
