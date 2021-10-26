@@ -1,12 +1,42 @@
 from os import name
-import odmantic
 from typing import List, Optional, Union, Dict
-from ormar import Model, Integer, String, Boolean, DateTime, ForeignKey, Float, JSON
+from ormar import (
+    Model,
+    Integer,
+    String,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Float,
+    ManyToMany,
+)
+from .schemas import EmailIn
 from db import MainMeta
 from users.models import User
 from users.schemas import UserConnect
 from datetime import datetime, timedelta
-import pydantic
+
+
+class EmailFromMail(Model):
+    class Meta(MainMeta):
+        pass
+
+    id: int = Integer(primary_key=True)
+
+
+class Email(Model):
+    class Meta(MainMeta):
+        pass
+
+    id: int = Integer(primary_key=True)
+    create_at: datetime = DateTime(default=datetime.now)
+    time_expiries: datetime = DateTime(default=datetime.now() + timedelta(minutes=10))
+    subject: str = String(nullable=False, max_length=8000)
+    from_at: str = String(nullable=False, max_length=8000)
+    to: str = String(nullable=False, max_length=8000)
+    html: str = String(nullable=False, max_length=8000)
+    text: str = String(nullable=False, max_length=8000)
+    textAsHtml: str = String(nullable=False, max_length=10000)
 
 
 class Mail(Model):
@@ -20,18 +50,6 @@ class Mail(Model):
     create_at: datetime = DateTime(default=datetime.now)
     time_expiries: datetime = DateTime(default=datetime.now() + timedelta(minutes=10))
     price: float = Float(default=0)
-    emails: pydantic.Json = JSON(default=[])
-
-
-class Email(odmantic.Model):
-    date: datetime
-    expireAt: datetime
-    subject: str
-    from_at: str
-    to: str
-    html: str
-    text: str
-    textAsHtml: str
-
-    class Config:
-        collection = "Email"
+    emails: Optional[List[EmailIn]] = ManyToMany(
+        Email, related_name="emails", through=EmailFromMail
+    )

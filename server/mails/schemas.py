@@ -14,7 +14,8 @@ class DeleteMail(BaseModel):
     is_active: bool
 
 
-class Email(BaseModel):
+class EmailIn(BaseModel):
+    id: int
     date: datetime
     expireAt: datetime
     subject: str
@@ -29,4 +30,4 @@ class GetEmails(BaseModel):
     id: int
     mail: EmailStr
     time_expiries: datetime
-    emails: Optional[List[Email]]
+    emails: Optional[List[EmailIn]]
