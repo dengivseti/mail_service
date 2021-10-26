@@ -5,3 +5,6 @@ test/
 tests/
 *__pycache__/
 .idea
+docker-conf/
+node_modules
+test.js

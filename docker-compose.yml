@@ -1,9 +1,56 @@
 version: "3.7"
 services:
+  mails:
+    build: ./mails
+    container_name: 'mails'
+    command: npm run server
+    restart: unless-stopped
+    environment:
+      - smtpPort=2525
+      - AMQP_HOST=amqp://mails:fsfklsegio564ojgfd@rabbitmq:5672/
+      - QUEUE_NAME=mails
+      - NODE_ENV=production
+    depends_on:
+      - rabbitmq
+    networks:
+      - temporary-mail-network
+    ports:
+      - "25:2525"
+    volumes:
+      - ./mails:/mails
+  rabbitmq:
+    restart: unless-stopped
+    image: rabbitmq:3.8-management
+    container_name: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=mails
+      - RABBITMQ_DEFAULT_PASS=fsfklsegio564ojgfd
+    volumes:
+        - postgresdata:/var/lib/rabbitmq/
+        - rabbitmqlog:/var/log/rabbitmq
+    networks:
+      - temporary-mail-network
   database:
+    restart: unless-stopped
     image: postgres:latest
+    container_name: database
     env_file: .env
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres:/var/lib/postgresql/data/
+      - postgresdata:/var/lib/postgresql/data/
+    networks:
+      - temporary-mail-network
+
+volumes:
+  postgresdata:
+  rabbitmqdata:
+  rabbitmqlog:
+
+networks:
+  temporary-mail-network:
+    driver: bridge
+

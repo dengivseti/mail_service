@@ -1,0 +1,21 @@
+{
+  "name": "mails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "test": "node test.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.8.0",
+    "mailparser": "^3.4.0",
+    "smtp-server": "^3.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  }
+}
