@@ -10,7 +10,7 @@ from ormar import (
     Float,
     ManyToMany,
 )
-from .schemas import EmailIn
+from .schemas import EmailOut
 from db import MainMeta
 from users.models import User
 from users.schemas import UserConnect
@@ -50,6 +50,6 @@ class Mail(Model):
     create_at: datetime = DateTime(default=datetime.now)
     time_expiries: datetime = DateTime(default=datetime.now() + timedelta(minutes=10))
     price: float = Float(default=0)
-    emails: Optional[List[EmailIn]] = ManyToMany(
+    emails: Optional[List[EmailOut]] = ManyToMany(
         Email, related_name="emails", through=EmailFromMail
     )

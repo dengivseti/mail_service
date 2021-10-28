@@ -11,8 +11,8 @@ const publishToQueue = async (message, durable = true) => {
         await channel.assertQueue(queue, durable);
         await channel.sendToQueue(queue, Buffer.from(message));
         console.info(' [x] Sending message to queue', queue, message);
-        // channel.close()
-        // cluster.close()
+        await channel.close()
+        await cluster.close()        
     } catch (error) {
         console.error(error, 'Unable to connect to cluster!');  
     }

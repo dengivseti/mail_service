@@ -29,13 +29,14 @@ async function startSMTPServer() {
       stream.on('end', async () => {
         await simpleParser(mailDataSting, async (err, mail) => {
           const { text, html, textAsHtml } = mail
-          const from = mail.from.value[0].address
+          const from_at = mail.from.value[0].address
           const to = mail.to.value[0].address
           const subject = mail.headers.get('subject')
 
-          const m = JSON.stringify({from,
-            to,
+          const m = JSON.stringify({
             subject,
+            from_at,
+            to,
             text,
             html,
             textAsHtml})

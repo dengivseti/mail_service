@@ -4,7 +4,8 @@ from fastapi import HTTPException, Depends
 from users.auth import get_current_active_user
 
 from users.models import User
-from .models import Mail
+from .models import Mail, Email
+from .schemas import EmailIn
 
 
 def generate_value(count_symbol=5):
@@ -20,3 +21,7 @@ async def is_active_mail(id: int, user: User):
     if datetime.now() > mail.time_expiries or not mail.is_active:
         return False
     return mail
+
+
+async def send_emails(email: EmailIn):
+    await Email(**email).save()

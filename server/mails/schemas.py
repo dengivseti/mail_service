@@ -15,15 +15,18 @@ class DeleteMail(BaseModel):
 
 
 class EmailIn(BaseModel):
-    id: int
-    date: datetime
-    expireAt: datetime
     subject: str
     from_at: str
     to: str
     html: str
     text: str
     textAsHtml: str
+
+
+class EmailOut(EmailIn):
+    id: int
+    date: datetime
+    expireAt: datetime
 
 
 class GetEmails(BaseModel):
