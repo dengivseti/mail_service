@@ -1,4 +1,5 @@
 import random, string
+from loguru import logger
 from datetime import datetime
 from fastapi import HTTPException, Depends
 from users.auth import get_current_active_user
@@ -24,4 +25,9 @@ async def is_active_mail(id: int, user: User):
 
 
 async def send_emails(email: EmailIn):
-    await Email(**email).save()
+    to = email.get("to")
+    _mail = await Mail.objects.select_related("emails").get_or_none(mail=to)
+    if _mail and _mail.time_expiries > datetime.now() and _mail.is_active:
+        email = await Email(**email).save()
+        await _mail.emails.add(email)
+        await _mail.update()
