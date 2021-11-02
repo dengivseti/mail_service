@@ -8,6 +8,7 @@ dotenv.load_dotenv("server.env")
 from fastapi import FastAPI
 from users.api import user_router
 from domains.api import domain_router
+from api.api import api_router
 from mails.api import mail_router
 from db import database, metadata, engine
 from pika_client import PikaClient
@@ -37,6 +38,7 @@ app.state.database = database
 app.include_router(user_router)
 app.include_router(domain_router)
 app.include_router(mail_router)
+app.include_router(api_router)
 
 
 @app.on_event("startup")

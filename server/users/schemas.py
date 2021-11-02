@@ -41,3 +41,9 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: Optional[EmailStr] = None
+
+
+class UserInfo(BaseModel):
+    balance: float
+    thread: int
+    max_thread: int

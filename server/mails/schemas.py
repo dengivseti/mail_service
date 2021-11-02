@@ -33,3 +33,8 @@ class GetEmails(BaseModel):
     mail: EmailStr
     time_expiries: datetime
     emails: Optional[List[EmailOut]]
+
+
+class GetActiveMail(BaseModel):
+    id: int
+    mail: EmailStr
