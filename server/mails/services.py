@@ -14,7 +14,7 @@ def generate_value(count_symbol=5):
 
 
 async def is_active_mail(id: int, user: User):
-    mail = await Mail.objects.get(id=id)
+    mail = await Mail.objects.select_related("emails").get(id=id)
     if not mail:
         return False
     if mail.user.id != user.id:

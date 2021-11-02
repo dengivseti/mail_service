@@ -25,12 +25,11 @@ class EmailIn(BaseModel):
 
 class EmailOut(EmailIn):
     id: int
-    date: datetime
-    expireAt: datetime
+    create_at: datetime
 
 
 class GetEmails(BaseModel):
     id: int
     mail: EmailStr
     time_expiries: datetime
-    emails: Optional[List[EmailIn]]
+    emails: Optional[List[EmailOut]]
