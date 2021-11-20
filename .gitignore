@@ -8,3 +8,4 @@ tests/
 docker-conf/
 node_modules
 test.js
+postgres/
