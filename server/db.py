@@ -1,4 +1,5 @@
 import os
+import dotenv
 import databases
 import sqlalchemy
 from ormar import ModelMeta

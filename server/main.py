@@ -15,7 +15,7 @@ from pika_client import PikaClient
 from loguru import logger
 from mails.services import send_emails
 
-metadata.create_all(engine)
+# metadata.create_all(engine)
 
 
 class API(FastAPI):
