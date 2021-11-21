@@ -9,3 +9,4 @@ docker-conf/
 node_modules
 test.js
 postgres/
+.pytest_cache/
